@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RunTrack</string>
+    <string name="welcome_message">러닝 기록과 신발 관리를 시작해 보세요.</string>
+</resources>

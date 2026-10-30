@@ -1,53 +1,42 @@
 package com.runtrack.data.repository
 
-import com.runtrack.data.models.*
+import com.runtrack.data.api.ShoeService
+import com.runtrack.data.models.Shoe
+import com.runtrack.data.models.ShoeStats
+import com.runtrack.data.models.ShoeUpdateRequest
+import kotlinx.coroutines.CancellationException
+import retrofit2.HttpException
+import retrofit2.Response
 import javax.inject.Inject
 
-class ShoeRepository @Inject constructor() {
-    // TODO: ShoeService를 주입받아 CRUD 로직 구현
-}
+class ShoeRepository @Inject constructor(private val shoeService: ShoeService) {
+    suspend fun getShoe(id: Int): Result<Shoe> = request { shoeService.getShoe(id) }
 
-    suspend fun getShoe(id: Int): Result<Shoe> = try {
-        val response = shoeService.getShoe(id)
-        if (response.isSuccessful) {
-            Result.success(response.body()!!)
-        } else {
-            Result.failure(Exception("신발 조회 실패: ${response.message()}"))
-        }
-    } catch (e: Exception) {
-        Result.failure(e)
-    }
+    suspend fun updateShoe(id: Int, request: ShoeUpdateRequest): Result<Shoe> =
+        request { shoeService.updateShoe(id, request) }
 
-    suspend fun updateShoe(id: Int, request: ShoeUpdateRequest): Result<Shoe> = try {
-        val response = shoeService.updateShoe(id, request)
-        if (response.isSuccessful) {
-            Result.success(response.body()!!)
-        } else {
-            Result.failure(Exception("신발 수정 실패: ${response.message()}"))
-        }
-    } catch (e: Exception) {
-        Result.failure(e)
-    }
+    suspend fun getShoeStats(id: Int): Result<ShoeStats> = request { shoeService.getShoeStats(id) }
 
     suspend fun deleteShoe(id: Int): Result<Unit> = try {
         val response = shoeService.deleteShoe(id)
-        if (response.isSuccessful) {
-            Result.success(Unit)
-        } else {
-            Result.failure(Exception("신발 삭제 실패: ${response.message()}"))
-        }
-    } catch (e: Exception) {
-        Result.failure(e)
+        if (response.isSuccessful) Result.success(Unit) else Result.failure(HttpException(response))
+    } catch (cancelled: CancellationException) {
+        throw cancelled
+    } catch (error: Exception) {
+        Result.failure(error)
     }
 
-    suspend fun getShoeStats(id: Int): Result<ShoeStats> = try {
-        val response = shoeService.getShoeStats(id)
+    private suspend fun <T : Any> request(call: suspend () -> Response<T>): Result<T> = try {
+        val response = call()
         if (response.isSuccessful) {
-            Result.success(response.body()!!)
+            response.body()?.let { Result.success(it) }
+                ?: Result.failure(IllegalStateException("서버 응답이 비어 있습니다."))
         } else {
-            Result.failure(Exception("신발 통계 조회 실패: ${response.message()}"))
+            Result.failure(HttpException(response))
         }
-    } catch (e: Exception) {
-        Result.failure(e)
+    } catch (cancelled: CancellationException) {
+        throw cancelled
+    } catch (error: Exception) {
+        Result.failure(error)
     }
 }

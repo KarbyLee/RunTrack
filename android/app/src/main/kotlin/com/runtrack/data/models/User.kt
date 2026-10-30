@@ -1,23 +1,34 @@
 package com.runtrack.data.models
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class User(
-    // TODO: PM을 참고하여 사용자 모델 단연 정의
+    val id: Int,
+    val username: String,
+    val email: String,
+    val weightKg: Float? = null,
+    val heightCm: Int? = null,
+    val footSize: String? = null,
+    val footWidth: String? = null,
+    val archType: String? = null,
+    val runningStyle: String? = null,
+    val budgetWon: Int? = null,
+    val preferredBrands: List<String>? = null,
+    val createdAt: String,
+    val updatedAt: String
 )
 
-@Serializable
-data class LoginRequest(
-    // TODO: 로그인 숲고 단연 정의
-)
+data class LoginRequest(val username: String, val password: String)
+data class LoginResponse(val accessToken: String, val tokenType: String, val expiresIn: Int)
 
-@Serializable
-data class LoginResponse(
-    // TODO: 로그인 응답 단연 정의
-)
-
-@Serializable
 data class RegisterRequest(
-    // TODO: 회원가입 숲고 단연 정의
+    val username: String,
+    val email: String,
+    val password: String,
+    val weightKg: Float? = null,
+    val heightCm: Int? = null,
+    val footSize: String? = null,
+    val footWidth: String? = null,
+    val archType: String? = null,
+    val runningStyle: String? = null,
+    val budgetWon: Int? = null,
+    val preferredBrands: List<String>? = null
 )

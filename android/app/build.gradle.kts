@@ -52,7 +52,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 
     packaging {
@@ -81,9 +81,9 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.4")
 
     // Hilt (DI)
-    implementation("com.google.dagger:hilt-android:2.48")
+    implementation("com.google.dagger:hilt-android:2.51.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
-    kapt("com.google.dagger:hilt-compiler:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.51.1")
 
     // Networking
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -101,7 +101,7 @@ dependencies {
     // Google Play Services (Location, Maps)
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-    implementation("com.google.maps.android:maps-compose:4.0.1")
+    implementation("com.google.maps.android:maps-compose:4.0.0")
     implementation("com.google.maps.android:maps-ktx:5.0.0")
 
     // Google Gemini API

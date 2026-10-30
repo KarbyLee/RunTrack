@@ -77,3 +77,8 @@ build/
 
 # 로그
 *.log
+
+# Commit the Android Gradle wrapper for reproducible builds.
+!/android/gradlew
+!/android/gradlew.bat
+!/android/gradle/wrapper/gradle-wrapper.jar
